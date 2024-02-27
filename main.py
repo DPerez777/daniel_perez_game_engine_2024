@@ -42,7 +42,7 @@ class Game:
             for line in f:
                 # print each line in f
                 print(line)
-                # put each line in f into the self.map_data list
+                # put each dddline in f into the self.map_data list
                 self.map_data.append(line)
 
      # Create run method which runs the whole GAME
@@ -52,7 +52,9 @@ class Game:
         # define multiple self.x var
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
-        self.powerups = pg.sprite.Group()
+        self.coins = pg.sprite.Group()
+        self.power_ups = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
         # self.player1 = Player(self, 1, 1)
         # for x in range(10, 20):
             # Wall(self, x, 5)
@@ -71,6 +73,10 @@ class Game:
                     self.player = Player(self, col, row)
                 if tile == 'C':
                     Coin(self, col, row)
+                if tile == 'M':
+                    Mob(self, col, row)
+                if tile == 'U':
+                    PowerUp(self, col, row)
 
     # Runs the game
     def run(self):
@@ -94,10 +100,19 @@ class Game:
         for y in range(0, HEIGHT, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
+    def draw_text(self, surface, text, size, color, x, y):
+        font_name = pg.font.match_font('arial')
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.topleft = (x,y)
+        surface.blit(text_surface, text_rect)
+
     def draw(self):
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
+        self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
         pg.display.flip()
 
     def events(self):
@@ -126,3 +141,11 @@ while True:
     g.new()
     g.run()
     # g.show_go_screen()
+
+'''
+Todo:
+Add a timer for coins/powerups to spawn at given intervals, (maybe increasing intervals)
+Add a timer for Mob to increase speed
+Make Mob take coins when colliding, make Player teleport to the opposite side of the map
+Complete the lvl when reaching x # of coins, goal is to get x # coins in < time possible
+'''

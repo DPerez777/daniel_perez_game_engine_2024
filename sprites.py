@@ -23,7 +23,10 @@ class Player(pg.sprite.Sprite):
         self.vx, self.vy = 0, 0
         self.x = x * TILESIZE
         self.y = y * TILESIZE
-
+        self.moneybag = 0
+        self.speed = 300
+    
+    # make the player follow WASD or the arrows 
     def get_keys(self):
         self.vs, self.vy = 0, 0
         keys = pg.key.get_pressed()
@@ -53,8 +56,10 @@ class Player(pg.sprite.Sprite):
     #             return True
     #     return False
     # will update the game so that the player's position is constantly updated?
-        
+    
+    # stop player movement when colliding with walls
     def collide_with_walls(self, dir):
+        # check if player x = wall x
         if dir == 'x':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -64,6 +69,7 @@ class Player(pg.sprite.Sprite):
                     self.x = hits[0].rect.right
                 self.vx = 0
                 self.rect.x = self.x
+        # check if player y = wall = 
         if dir == 'y':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -73,6 +79,16 @@ class Player(pg.sprite.Sprite):
                     self.y = hits[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
+    # made possible by Aayush's question!
+    def collide_with_group(self, group, kill):
+        hits = pg.sprite.spritecollide(self, group, kill)
+        if hits:
+            if str(hits[0].__class__.__name__) == "Coin":
+                self.moneybag += 1
+            if str(hits[0].__class__.__name__) == "PowerUp":
+                # self.moneybag += 1
+                print ("W")
+
 
     
     def update(self):
@@ -82,12 +98,11 @@ class Player(pg.sprite.Sprite):
         self.rect.x = self.x
         # add collision later
         self.collide_with_walls('x')
-
         self.rect.y = self.y
         # add collision later
         self.collide_with_walls('y')
-        if self.collide_with_group(self.game.powerups, True):
-            self.moneybag += 1
+        self.collide_with_group(self.game.coins, True)
+        self.collide_with_group(self.game.power_ups, True)
 
 
 
@@ -96,12 +111,12 @@ class Wall(pg.sprite.Sprite):
     # initialize the wall class
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls
-        # sets the dimensions for the wall image
-        self.image = pg.Surface((TILESIZE, TILESIZE))
         # init super class
         pg.sprite.Sprite.__init__(self, self.groups)
         # set game class
         self.game = game
+        # sets the dimensions for the wall image
+        self.image = pg.Surface((TILESIZE, TILESIZE))    
         # sets the color for the wall
         self.image.fill(BROWN)
         # makes the rectangular area of the wall
@@ -116,13 +131,13 @@ class Wall(pg.sprite.Sprite):
 class Coin(pg.sprite.Sprite):
     # initialize the wall class
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.powerups
+        self.groups = game.all_sprites, game.coins
         # init super class
         pg.sprite.Sprite.__init__(self, self.groups)
-        # sets the dimensions for the wall image
-        self.image = pg.Surface((TILESIZE, TILESIZE))
         # set game class
         self.game = game
+        # sets the dimensions for the wall image
+        self.image = pg.Surface((TILESIZE, TILESIZE))
         # sets the color for the coin
         self.image.fill(YELLOW)
         # makes the rectangular area of the coin
@@ -133,31 +148,109 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
-    def collide_with_group(self, group):
-        hits = pg.sprite.spritecollide(self, group, kill)
-        if hits: return True
 
-    def collide_with_powerups(self, dir):
+class PowerUp(pg.sprite.Sprite):
+    # initialize the wall class
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.coins
+        # init super class
+        pg.sprite.Sprite.__init__(self, self.groups)
+        # set game class
+        self.game = game
+        # sets the dimensions for the wall image
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        # sets the color for the coin
+        self.image.fill(BLUE)
+        # makes the rectangular area of the coin
+        self.rect = self.image.get_rect()
+        # sets the coordinates of the wall
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+
+# creates the class "Mob"
+class Mob(pg.sprite.Sprite):
+    
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.mobs
+        # init super class
+        pg.sprite.Sprite.__init__(self, self.groups)
+        # set set self.game to game
+        self.game = game
+        # set dimensions for the image
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        # set mob color to RED
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        # set coords of Mob
+        self.x = x
+        self.y = y
+        self.vx, self.vy = 100, 100
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.speed = 1
+    # can't pass through walls
+    def collide_with_walls(self, dir):
+        # check if x coord is the same as wall x coord
         if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game.powerups, True)
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            # return to original position if interact with wall
+                # doesn't this method allow for glitches if spammed enough?
             if hits:
-                if self.vx > 0:
-                    self.x = hits[0].rect.left - self.rect.width
-                if self.vx < 0:
-                    self.x = hits[0].rect.right
-                self.vx = 0
+                self.vx *= -1
                 self.rect.x = self.x
-                if hits:
-                    return
+        # check if y coord is the same as wall y coord
         if dir == 'y':
-            hits = pg.sprite.spritecollide(self, self.game.powerups, True)
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            # return to original position if interact with wall
             if hits:
-                if self.vy > 0:
-                    self.y = hits[0].rect.top - self.rect.height
-                if self.vy < 0:
-                    self.y = hits[0].rect.bottom
-                self.vy = 0
+                self.vy *= -1
                 self.rect.y = self.y
+    # make Mob follow player (?)d
+    def update(self):
+        self.x += self.vx *self.game.dt
+        self.y += self.vy *self.game.dt
+
+        if self.rect.x < self.game.player.rect.x:
+            self.vx = 100
+        if self.rect.x > self.game.player.rect.x:
+            self.vx = -100
+        if self.rect.y < self.game.player.rect.y:
+            self.vy = 100
+        if self.rect.y > self.game.player.rect.y:
+            self.vy = -100
+        self.rect.x = self.x
+        self.collide_with_walls('x')
+        self.rect.y = self.y
+        self.collide_with_walls('y')
+
+
+    # def collide_with_group(self, group):
+    #     hits = pg.sprite.spritecollide(self, group, kill)
+    #     if hits: return True
+
+    # def collide_with_powerups(self, dir):
+    #     if dir == 'x':
+    #         hits = pg.sprite.spritecollide(self, self.game.powerups, True)
+    #         if hits:
+    #             if self.vx > 0:
+    #                 self.x = hits[0].rect.left - self.rect.width
+    #             if self.vx < 0:
+    #                 self.x = hits[0].rect.right
+    #             self.vx = 0
+    #             self.rect.x = self.x
+    #             if hits:
+    #                 return
+    #     if dir == 'y':
+    #         hits = pg.sprite.spritecollide(self, self.game.powerups, True)
+    #         if hits:
+    #             if self.vy > 0:
+    #                 self.y = hits[0].rect.top - self.rect.height
+    #             if self.vy < 0:
+    #                 self.y = hits[0].rect.bottom
+    #             self.vy = 0
+    #             self.rect.y = self.y
 
 # # sets the name of p1
 # p1 = Player("Belda")
