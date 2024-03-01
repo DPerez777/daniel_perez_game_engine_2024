@@ -12,6 +12,11 @@ from sprites import *
 import sys
 # import path from os
 from os import path
+'''
+menu screen 
+feedback when player gets hurt
+make levels
+'''
 
 
 # creates the game blueprint
