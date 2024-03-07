@@ -2,6 +2,8 @@
 # This code was inspired by Zelda and informed by Chris Bradfield
 import pygame as pg
 from settings import *
+from utils import *
+from random import choice
 # ^ allows us to import/use pygame and imports all settings from settings
 
 # make player class, subclass of pg.sprite.Sprite
@@ -25,11 +27,15 @@ class Player(pg.sprite.Sprite):
         self.y = y * TILESIZE
         self.moneybag = 0
         self.speed = 300
+        self.hitpoints = 100
+        self.cooling = False
     
     # make the player follow WASD or the arrows 
     def get_keys(self):
         self.vs, self.vy = 0, 0
         keys = pg.key.get_pressed()
+        if keys[pg.K_t]:
+            self.game.test_timer.event_reset()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.vx = -PLAYER_SPEED
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
@@ -86,8 +92,8 @@ class Player(pg.sprite.Sprite):
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
             if str(hits[0].__class__.__name__) == "PowerUp":
-                # self.moneybag += 1
-                self.speed += 200
+                self.hitpoints += 1
+                # self.speed += 200
             if str(hits[0].__class__.__name__) == "Mob":
                 print(hits[0].__class__.__name__)
                 print("collided with mob")
@@ -105,7 +111,10 @@ class Player(pg.sprite.Sprite):
         # add collision later
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
-        self.collide_with_group(self.game.power_ups, True)
+        if self.game.cooldown.cd < 1:
+            self.cooling = False
+        if not self.cooling:
+            self.collide_with_group(self.game.power_ups, True)
         self.collide_with_group(self.game.mobs, False)
 
 
@@ -156,7 +165,7 @@ class Coin(pg.sprite.Sprite):
 class PowerUp(pg.sprite.Sprite):
     # initialize the wall class
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.coins
+        self.groups = game.all_sprites, game.power_ups
         # init super class
         pg.sprite.Sprite.__init__(self, self.groups)
         # set game class
@@ -225,9 +234,9 @@ class Mob(pg.sprite.Sprite):
         if self.rect.y > self.game.player.rect.y:
             self.vy = -100
         self.rect.x = self.x
-        self.collide_with_walls('x')
+        # self.collide_with_walls('x')
         self.rect.y = self.y
-        self.collide_with_walls('y')
+        # self.collide_with_walls('y')
 
 
     # def collide_with_group(self, group):
