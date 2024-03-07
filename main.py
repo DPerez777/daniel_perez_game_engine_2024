@@ -8,10 +8,14 @@ from settings import *
 from random import randint
 # import all from sprites
 from sprites import *
+from utils import *
 # import module for variables
 import sys
 # import path from os
 from os import path
+# import rounding for the clock
+from math import floor
+
 '''
 menu screen - player chooses when to start the game, but must press button to do so
 feedback when player gets hurt - shows player they took damage, 
@@ -42,6 +46,7 @@ class Game:
         The with statement is a context manager in Python.
         It is used to ensure that a resource is properly closed or released
         after it is used. This can help to prevent errors and leaks.
+        - Mr. Cozort
         '''
         with open(path.join(game_folder, 'map.txt'), 'rt') as f:
             for line in f:
@@ -52,6 +57,8 @@ class Game:
 
      # Create run method which runs the whole GAME
     def new(self):
+        # make the timer
+        self.cooldown = Timer(self)
         # make text saying "create new game..."
         print("create new game...")
         # define multiple self.x var
@@ -85,7 +92,6 @@ class Game:
 
     # Runs the game
     def run(self):
-        # 
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -97,6 +103,8 @@ class Game:
         sys.exit()
 
     def update(self):
+        # make the test timer tick
+        self.cooldown.ticking()
         self.all_sprites.update()
     
     def draw_grid(self):
@@ -115,8 +123,13 @@ class Game:
 
     def draw(self):
         self.screen.fill(BGCOLOR)
-        self.draw_grid()
+        # self.draw_grid()
         self.all_sprites.draw(self.screen)
+        # draw timer
+        self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
+        self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
+        self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
+        # display moneybag
         self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
         pg.display.flip()
 
