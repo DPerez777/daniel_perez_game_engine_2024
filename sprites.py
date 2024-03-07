@@ -87,7 +87,10 @@ class Player(pg.sprite.Sprite):
                 self.moneybag += 1
             if str(hits[0].__class__.__name__) == "PowerUp":
                 # self.moneybag += 1
-                print ("W")
+                self.speed += 200
+            if str(hits[0].__class__.__name__) == "Mob":
+                print(hits[0].__class__.__name__)
+                print("collided with mob")
 
 
     
@@ -103,6 +106,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.power_ups, True)
+        self.collide_with_group(self.game.mobs, False)
 
 
 

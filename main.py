@@ -13,9 +13,9 @@ import sys
 # import path from os
 from os import path
 '''
-menu screen 
-feedback when player gets hurt
-make levels
+menu screen - player chooses when to start the game, but must press button to do so
+feedback when player gets hurt - shows player they took damage, 
+make levels (make a final boss)
 '''
 
 
@@ -146,11 +146,3 @@ while True:
     g.new()
     g.run()
     # g.show_go_screen()
-
-'''
-Todo:
-Add a timer for coins/powerups to spawn at given intervals, (maybe increasing intervals)
-Add a timer for Mob to increase speed
-Make Mob take coins when colliding, make Player teleport to the opposite side of the map
-Complete the lvl when reaching x # of coins, goal is to get x # coins in < time possible
-'''
