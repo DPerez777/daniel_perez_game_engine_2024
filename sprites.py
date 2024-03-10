@@ -96,7 +96,9 @@ class Player(pg.sprite.Sprite):
                 # self.speed += 200
             if str(hits[0].__class__.__name__) == "Mob":
                 print(hits[0].__class__.__name__)
-                print("collided with mob")
+                self.hitpoints -= 1
+                print(self.hitpoints)
+                
 
 
     
@@ -203,7 +205,7 @@ class Mob(pg.sprite.Sprite):
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.speed = 1
-    # can't pass through walls
+    # can't pass through walls 
     def collide_with_walls(self, dir):
         # check if x coord is the same as wall x coord
         if dir == 'x':
