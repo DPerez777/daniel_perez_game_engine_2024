@@ -91,14 +91,18 @@ class Player(pg.sprite.Sprite):
         if hits:
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
+                hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
-                self.hitpoints += 1
+                if self.hitpoints < 100:
+                    self.hitpoints += 1
+                    hits[0].kill()
                 # self.speed += 200
+                
             if str(hits[0].__class__.__name__) == "Mob":
                 print(hits[0].__class__.__name__)
                 self.hitpoints -= 1
                 print(self.hitpoints)
-                
+
 
 
     
@@ -116,7 +120,7 @@ class Player(pg.sprite.Sprite):
         if self.game.cooldown.cd < 1:
             self.cooling = False
         if not self.cooling:
-            self.collide_with_group(self.game.power_ups, True)
+            self.collide_with_group(self.game.power_ups, False)
         self.collide_with_group(self.game.mobs, False)
 
 
