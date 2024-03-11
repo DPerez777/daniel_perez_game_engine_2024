@@ -7,7 +7,7 @@ TILESIZE = 32
 # ^ the dimensions of objects (32x32)
 BGCOLOR = (25,25,25)
 GREEN = (0,255,0)
-BROWN = (165,70,70)
+BROWN = (125,80,80)
 LIGHTGREY = (100,100,100)
 YELLOW = (255,255,0)
 WHITE = (255,255,255)

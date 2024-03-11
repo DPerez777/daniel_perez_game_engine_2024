@@ -130,7 +130,8 @@ class Game:
         self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
         self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
         # display moneybag
-        self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
+        self.draw_text(self.screen, str(self.player.moneybag), 32, WHITE, 1, 0)
+        self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
         pg.display.flip()
 
     def events(self):
