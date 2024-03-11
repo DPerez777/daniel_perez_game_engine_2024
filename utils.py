@@ -22,7 +22,8 @@ class Timer():
         if self.cd > 0:
             self.cd = self.cd - self.game.dt
     def event_reset(self):
-        self.event_time = floor((pg.time.get_tickets())/1000)
+        self.event_time = floor((pg.time.get_ticks())/1000)
     # set current time
-    def event_reset(self):
-        self.current_time = floor((pg.time.get_tickets())/1000)
+    def get_current_time(self):
+        self.current_time = floor((pg.time.get_ticks())/1000)
+        return self.current_time

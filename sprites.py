@@ -29,6 +29,7 @@ class Player(pg.sprite.Sprite):
         self.speed = 300
         self.hitpoints = 100
         self.cooling = False
+        self.timer = Timer(self.game)
     
     # make the player follow WASD or the arrows 
     def get_keys(self):
@@ -99,9 +100,12 @@ class Player(pg.sprite.Sprite):
                 # self.speed += 200
                 
             if str(hits[0].__class__.__name__) == "Mob":
-                print(hits[0].__class__.__name__)
+                # print(hits[0].__class__.__name__)
                 self.hitpoints -= 1
-                print(self.hitpoints)
+                # print(self.hitpoints)
+                if self.timer.get_countdown() > 15:
+                    self.hitpoints -= 1
+            
 
 
 
@@ -208,7 +212,8 @@ class Mob(pg.sprite.Sprite):
         self.vx, self.vy = 100, 100
         self.x = x * TILESIZE
         self.y = y * TILESIZE
-        self.speed = 1
+        self.speed = 90
+        self.timer = Timer(self.game)
     # can't pass through walls 
     def collide_with_walls(self, dir):
         # check if x coord is the same as wall x coord
@@ -228,21 +233,25 @@ class Mob(pg.sprite.Sprite):
                 self.rect.y = self.y
     # make Mob follow player (?)d
     def update(self):
-        self.x += self.vx *self.game.dt
-        self.y += self.vy *self.game.dt
+        self.x += self.vx * self.game.dt
+        self.y += self.vy * self.game.dt
 
         if self.rect.x < self.game.player.rect.x:
-            self.vx = 100
+            self.vx = self.speed
         if self.rect.x > self.game.player.rect.x:
-            self.vx = -100
+            self.vx = -self.speed 
         if self.rect.y < self.game.player.rect.y:
-            self.vy = 100
+            self.vy = self.speed
         if self.rect.y > self.game.player.rect.y:
-            self.vy = -100
+            self.vy = -self.speed
         self.rect.x = self.x
         # self.collide_with_walls('x')
         self.rect.y = self.y
         # self.collide_with_walls('y')
+        if self.timer.get_current_time() >= 15:
+            self.image = pg.surface.Surface((TILESIZE*2,TILESIZE*2))
+            self.speed = 135
+        
 
 
     # def collide_with_group(self, group):
