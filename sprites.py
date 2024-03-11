@@ -149,6 +149,11 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        self.timer = Timer(self.game)
+    
+    def update(self):
+        if self.timer.get_countdown() == 15:
+            self.image.fill(BLACK)
 
 # Coin sprites
 class Coin(pg.sprite.Sprite):
@@ -248,6 +253,9 @@ class Mob(pg.sprite.Sprite):
         # self.collide_with_walls('x')
         self.rect.y = self.y
         # self.collide_with_walls('y')
+        if self.timer.get_current_time() == 14:
+            self.image = pg.surface.Surface((TILESIZE*1.5,TILESIZE*1.5))
+            self.speed = 110
         if self.timer.get_current_time() >= 15:
             self.image = pg.surface.Surface((TILESIZE*2,TILESIZE*2))
             self.speed = 135

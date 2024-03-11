@@ -36,6 +36,7 @@ class Game:
         self.clock = pg.time.Clock()
         # Boolean to check whether game is running or not
         self.load_data()
+        self.timer = Timer(self)
     # gonna load data to the RAM
     def load_data(self):
         # make game_folder var for the file path 
@@ -149,7 +150,12 @@ class Game:
             #         self.player.move(dy=-1)
             #     if event.key == pg.K_DOWN:
             #         self.player.move(dy=1)
-                
+    def draw_grid_inverse(self):
+        if self.timer.get_countdown() == 15:
+            for x in range(0, WIDTH, TILESIZE):
+                pg.draw.line(self.screen, WHITE, (x, 0), (x, HEIGHT))
+            for y in range(0, HEIGHT, TILESIZE):
+                pg.draw.line(self.screen, WHITE, (0, y), (WIDTH, y))
 
 
 # Create a new game
