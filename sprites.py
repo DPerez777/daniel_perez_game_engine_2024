@@ -27,7 +27,7 @@ class Player(pg.sprite.Sprite):
         self.y = y * TILESIZE
         self.moneybag = 0
         self.speed = 300
-        self.hitpoints = 100
+        self.hitpoints = 50
         self.cooling = False
         self.timer = Timer(self.game)
     
@@ -94,7 +94,7 @@ class Player(pg.sprite.Sprite):
                 self.moneybag += 1
                 hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
-                if self.hitpoints < 100:
+                if self.hitpoints < 50:
                     self.hitpoints += 1
                     hits[0].kill()
                 # self.speed += 200
@@ -149,11 +149,10 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-        self.timer = Timer(self.game)
     
     def update(self):
-        if self.timer.get_countdown() == 15:
-            self.image.fill(BLACK)
+        if self.game.timer.get_current_time() >= 15:
+            self.image.fill(WALL2)
 
 # Coin sprites
 class Coin(pg.sprite.Sprite):
@@ -218,7 +217,6 @@ class Mob(pg.sprite.Sprite):
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.speed = 90
-        self.timer = Timer(self.game)
     # can't pass through walls 
     def collide_with_walls(self, dir):
         # check if x coord is the same as wall x coord
@@ -253,10 +251,10 @@ class Mob(pg.sprite.Sprite):
         # self.collide_with_walls('x')
         self.rect.y = self.y
         # self.collide_with_walls('y')
-        if self.timer.get_current_time() == 14:
+        if self.game.timer.get_current_time() == 14:
             self.image = pg.surface.Surface((TILESIZE*1.5,TILESIZE*1.5))
             self.speed = 110
-        if self.timer.get_current_time() >= 15:
+        if self.game.timer.get_current_time() >= 15:
             self.image = pg.surface.Surface((TILESIZE*2,TILESIZE*2))
             self.speed = 135
         

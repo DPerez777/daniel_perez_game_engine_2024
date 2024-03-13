@@ -123,16 +123,22 @@ class Game:
         surface.blit(text_surface, text_rect)
 
     def draw(self):
-        self.screen.fill(BGCOLOR)
+        if self.timer.get_current_time() >= 15:
+            self.screen.fill(BGCOLOR2)
+            self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
+            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, RED, 935, 0)
+        else: 
+            self.screen.fill(BGCOLOR)
+            self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
+            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
+        
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
         # draw timer
         self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
-        self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
-        self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
+        # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
+        # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
         # display moneybag
-        self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
-        self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
         pg.display.flip()
 
     def events(self):
@@ -140,6 +146,7 @@ class Game:
             # if the quit event occurs, quit self
             if event.type == pg.QUIT:
                 self.quit()
+    
             # make the controls to move player
             # if event.type == pg.KEYDOWN:
             #     if event.key == pg.K_LEFT:
@@ -150,12 +157,9 @@ class Game:
             #         self.player.move(dy=-1)
             #     if event.key == pg.K_DOWN:
             #         self.player.move(dy=1)
-    def draw_grid_inverse(self):
-        if self.timer.get_countdown() == 15:
-            for x in range(0, WIDTH, TILESIZE):
-                pg.draw.line(self.screen, WHITE, (x, 0), (x, HEIGHT))
-            for y in range(0, HEIGHT, TILESIZE):
-                pg.draw.line(self.screen, WHITE, (0, y), (WIDTH, y))
+                
+
+                
 
 
 # Create a new game

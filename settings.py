@@ -14,6 +14,9 @@ WHITE = (255,255,255)
 BLUE = (0,0,255)
 RED = (255,0,0)
 BLACK = (0,0,0)
+BGCOLOR2 = (230,230,230)
+WALL2 = (40,40,40)
+ORANGE = (255,200,0)
 # ^ color of objects using RGB
 
 FPS = 30
