@@ -175,6 +175,10 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+    def update(self):
+        if self.game.timer.get_current_time() >= 15:
+            self.image.fill(ORANGE)
+
 
 class PowerUp(pg.sprite.Sprite):
     # initialize the wall class
@@ -195,6 +199,10 @@ class PowerUp(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+    
+    def update(self):
+        if self.game.timer.get_current_time() >= 15:
+            self.image.fill(CYAN)
 
 # creates the class "Mob"
 class Mob(pg.sprite.Sprite):

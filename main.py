@@ -125,17 +125,23 @@ class Game:
     def draw(self):
         if self.timer.get_current_time() >= 15:
             self.screen.fill(BGCOLOR2)
-            self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
-            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, RED, 935, 0)
-        else: 
-            self.screen.fill(BGCOLOR)
-            self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
-            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
+            # self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
+            # self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, RED, 935, 0)
+        else: self.screen.fill(BGCOLOR)
+            
         
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
         # draw timer
         self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
+        
+        if self.timer.get_current_time() >= 15:
+            self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
+            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, CYAN, 935, 0)
+        else:
+            self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
+            self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
+        
         # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
         # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
         # display moneybag
