@@ -97,6 +97,7 @@ class Player(pg.sprite.Sprite):
                 if self.hitpoints < 50:
                     self.hitpoints += 1
                     hits[0].kill()
+                    # return self.game.get_current_time()
                 # self.speed += 200
                 
             if str(hits[0].__class__.__name__) == "Mob":
@@ -178,6 +179,7 @@ class Coin(pg.sprite.Sprite):
     def update(self):
         if self.game.timer.get_current_time() >= 15:
             self.image.fill(ORANGE)
+        
 
 
 class PowerUp(pg.sprite.Sprite):
