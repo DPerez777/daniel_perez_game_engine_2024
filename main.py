@@ -190,7 +190,10 @@ class Game:
                 if event.type == pg.KEYUP:
                     waiting = False
 
-                
+    def powerup_respawn(self):
+        pass
+    def coin_respawn(self):
+        pass
 
 
 # Create a new game

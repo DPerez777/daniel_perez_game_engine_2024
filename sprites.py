@@ -121,12 +121,16 @@ class Player(pg.sprite.Sprite):
         self.rect.y = self.y
         # add collision later
         self.collide_with_walls('y')
+                    
         self.collide_with_group(self.game.coins, True)
         if self.game.cooldown.cd < 1:
             self.cooling = False
-        if not self.cooling:
-            self.collide_with_group(self.game.power_ups, False)
+        # if not self.cooling:
+        #     self.game.powerup_respawn() = True
+        self.collide_with_group(self.game.power_ups, False)
         self.collide_with_group(self.game.mobs, False)
+        
+        
 
 
 
@@ -190,6 +194,7 @@ class PowerUp(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         # set game class
         self.game = game
+        # self.respawn = 
         # sets the dimensions for the wall image
         self.image = pg.Surface((TILESIZE, TILESIZE))
         # sets the color for the coin
