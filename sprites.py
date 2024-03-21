@@ -76,7 +76,7 @@ class Player(pg.sprite.Sprite):
                     self.x = hits[0].rect.right
                 self.vx = 0
                 self.rect.x = self.x
-        # check if player y = wall = 
+        # check if player y = wall 
         if dir == 'y':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -127,6 +127,7 @@ class Player(pg.sprite.Sprite):
             self.cooling = False
         # if not self.cooling:
         #     self.game.powerup_respawn() = True
+        # make power_ups and mobs False when colliding
         self.collide_with_group(self.game.power_ups, False)
         self.collide_with_group(self.game.mobs, False)
         
@@ -253,7 +254,7 @@ class Mob(pg.sprite.Sprite):
     def update(self):
         self.x += self.vx * self.game.dt
         self.y += self.vy * self.game.dt
-
+        # move the mob
         if self.rect.x < self.game.player.rect.x:
             self.vx = self.speed
         if self.rect.x > self.game.player.rect.x:
@@ -266,6 +267,7 @@ class Mob(pg.sprite.Sprite):
         # self.collide_with_walls('x')
         self.rect.y = self.y
         # self.collide_with_walls('y')
+        # transform the mob after 14s
         if self.game.timer.get_current_time() == 14:
             self.image = pg.surface.Surface((TILESIZE*1.5,TILESIZE*1.5))
             self.speed = 110

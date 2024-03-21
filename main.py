@@ -109,12 +109,14 @@ class Game:
         self.cooldown.ticking()
         self.all_sprites.update()
     
+    # draw the grid
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
+    # allow text to appear with font, color, etc
     def draw_text(self, surface, text, size, color, x, y):
         font_name = pg.font.match_font('arial')
         font = pg.font.Font(font_name, size)
@@ -123,20 +125,20 @@ class Game:
         text_rect.topleft = (x,y)
         surface.blit(text_surface, text_rect)
 
+    # show text and bg color
     def draw(self):
+        # change bg color after 15s
         if self.timer.get_current_time() >= 15:
             self.screen.fill(BGCOLOR2)
             # self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
             # self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, RED, 935, 0)
         else: self.screen.fill(BGCOLOR)
         
-        # if 
-        
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
         # draw timer
         self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
-        
+        # make the text change color after 15s
         if self.timer.get_current_time() >= 15:
             self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, CYAN, 935, 0)
@@ -167,6 +169,7 @@ class Game:
             #         self.player.move(dy=-1)
             #     if event.key == pg.K_DOWN:
             #         self.player.move(dy=1)
+    # start screen
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
         self.draw_text(self.screen, "Press any key to play...", 24, GREEN, WIDTH/2, HEIGHT/2)
@@ -179,6 +182,7 @@ class Game:
     #     self.draw_text(self.screen, "Press any key to play...", 24, WHITE, WIDTH/2, HEIGHT/2)
     #     pg.display.flip()
     #     self.wait_for_key()
+    # wait for KEYUP to start
     def wait_for_key(self):
         waiting = True
         while waiting:
