@@ -4,6 +4,28 @@ import pygame as pg
 from settings import *
 from utils import *
 from random import choice
+
+
+from os import path
+from pygame.sprite import Sprite
+
+SPRITESHEET = "theBell.png"
+
+dir = path.dirname(__file__)
+img_dir = path.join(dir, 'images')
+
+class Spritesheet:
+    # utility class for loading and parsing spritesheets
+    def __init__(self, filename):
+        self.spritesheet = pg.image.load(filename).convert()
+
+    def get_image(self, x, y, width, height):
+        # grab an image out of a larger spritesheet
+        image = pg.Surface((width, height))
+        image.blit(self.spritesheet, (0, 0), (x, y, width, height))
+        # image = pg.transform.scale(image, (width, height))
+        image = pg.transform.scale(image, (width * 2, height * 2))
+        return image
 # ^ allows us to import/use pygame and imports all settings from settings
 
 # make player class, subclass of pg.sprite.Sprite
@@ -18,7 +40,10 @@ class Player(pg.sprite.Sprite):
         # makes dimensions for the player image
         self.image = pg.Surface((TILESIZE, TILESIZE))
         # fills self.image with color (GREEN), defined in settings
-        self.image.fill(GREEN)
+        self.spritesheet = Spritesheet(path.join(img_dir, 'theBell.png'))
+        self.load_images()
+        self.image = self.standing_frames[0]
+        self.rect = self.image.get_rect()
         # makes the rectangular area of the plane
         self.rect = self.image.get_rect()
         # sets the x and y positions for the player
@@ -107,7 +132,19 @@ class Player(pg.sprite.Sprite):
                 if self.timer.get_countdown() > 15:
                     self.hitpoints -= 1
             
-
+    def load_images(self):
+        self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
+                                self.spritesheet.get_image(32,0, 32, 32)]
+            
+    def animate(self):
+        now = pg.time.get_ticks()
+        if now - self.last_update > 350:
+            self.last_update = now
+            self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
+            bottom = self.rect.bottom
+            self.image = self.standing_frames[self.current_frame]
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
 
 
     
@@ -274,7 +311,10 @@ class Mob(pg.sprite.Sprite):
         if self.game.timer.get_current_time() >= 15:
             self.image = pg.surface.Surface((TILESIZE*2,TILESIZE*2))
             self.speed = 135
-        
+
+
+
+
 
 
     # def collide_with_group(self, group):
