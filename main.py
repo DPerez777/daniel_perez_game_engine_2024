@@ -17,9 +17,11 @@ from os import path
 from math import floor
 
 '''
-menu screen - player chooses when to start the game, but must press button to do so
-feedback when player gets hurt - shows player they took damage, 
-make levels (make a final boss)
+menu screen - player chooses when to start the game, but must press button to do so DONE
+feedback when player gets hurt - shows player they took damage, DONE
+make levels (make a final boss) DONE
+respawn powerups and coins
+make death screen
 '''
 
 
