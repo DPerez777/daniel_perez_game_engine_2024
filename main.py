@@ -21,7 +21,8 @@ menu screen - player chooses when to start the game, but must press button to do
 feedback when player gets hurt - shows player they took damage, DONE
 make levels (make a final boss) DONE
 respawn powerups and coins
-make death screen
+make death screen/end game if hp=0 DONE
+make a boss fight/way to kill boss
 '''
 
 
@@ -97,11 +98,13 @@ class Game:
     # Runs the game
     def run(self):
         self.playing = True
-        while self.playing:
+        while self.playing and self.player.hitpoints > 0:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
+        else:
+            self.quit()
     def quit(self):
         pg.quit()
         sys.exit()

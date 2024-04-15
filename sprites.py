@@ -120,7 +120,7 @@ class Player(pg.sprite.Sprite):
                 hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
                 if self.hitpoints < 50:
-                    self.hitpoints += 1
+                    self.hitpoints += 5
                     hits[0].kill()
                     # return self.game.get_current_time()
                 # self.speed += 200
@@ -270,7 +270,7 @@ class Mob(pg.sprite.Sprite):
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.speed = 90
-    # can't pass through walls 
+    # can't pass through walls (it can now pass through walls as a feature)
     def collide_with_walls(self, dir):
         # check if x coord is the same as wall x coord
         if dir == 'x':
@@ -287,6 +287,12 @@ class Mob(pg.sprite.Sprite):
             if hits:
                 self.vy *= -1
                 self.rect.y = self.y
+    def collide_with_group(self, group, kill):
+        hits = pg.sprite.spritecollide(self, group, kill)
+        if hits:
+            if str(hits[0].__class__.__name__) == "Player":
+                self.vx *= -1
+                self.vy *= -1
     # make Mob follow player (?)d
     def update(self):
         self.x += self.vx * self.game.dt
