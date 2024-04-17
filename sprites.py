@@ -24,7 +24,7 @@ class Spritesheet:
         image = pg.Surface((width, height))
         image.blit(self.spritesheet, (0, 0), (x, y, width, height))
         # image = pg.transform.scale(image, (width, height))
-        image = pg.transform.scale(image, (width * 2, height * 2))
+        image = pg.transform.scale(image, (width * 1.5, height * 1.5))
         return image
 # ^ allows us to import/use pygame and imports all settings from settings
 
@@ -74,20 +74,6 @@ class Player(pg.sprite.Sprite):
             self.vx *= 0.7071
             self.vy *= 0.7071
 
-    # will move the player around the screen (incomplete)
-    # def move(self, dx=0, dy=0):
-    #     self.x += dx
-    #     self.y += dy
-
-    # prevent player from going in walls
-    # def collide_with_walls(self, dx=0, dy=0):
-    #     # make for loop using self.game.walls
-    #     for wall in self.game.walls:
-    #         # if the x/y value of the wall equals the player's x/y value + the movement event, collide_with_walls = True, else False
-    #         if wall.x == self.x +dx and wall.y == self.y + dy:
-    #             return True
-    #     return False
-    # will update the game so that the player's position is constantly updated?
     
     # stop player movement when colliding with walls
     def collide_with_walls(self, dir):
@@ -270,6 +256,7 @@ class Mob(pg.sprite.Sprite):
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.speed = 90
+        self.health = 1000
     # can't pass through walls (it can now pass through walls as a feature)
     def collide_with_walls(self, dir):
         # check if x coord is the same as wall x coord
