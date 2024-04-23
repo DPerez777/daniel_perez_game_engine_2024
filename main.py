@@ -20,9 +20,9 @@ from math import floor
 menu screen - player chooses when to start the game, but must press button to do so DONE
 feedback when player gets hurt - shows player they took damage, DONE
 make levels (make a final boss) DONE
-respawn powerups and coins
+respawn powerups and coins ONGOING
 make death screen/end game if hp=0 DONE
-make a boss fight/way to kill boss
+make a boss fight/way to kill boss ONGOING
 '''
 
 
