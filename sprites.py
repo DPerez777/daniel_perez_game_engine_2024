@@ -319,34 +319,3 @@ class Mob(pg.sprite.Sprite):
 
 
 
-
-    # def collide_with_group(self, group):
-    #     hits = pg.sprite.spritecollide(self, group, kill)
-    #     if hits: return True
-
-    # def collide_with_powerups(self, dir):
-    #     if dir == 'x':
-    #         hits = pg.sprite.spritecollide(self, self.game.powerups, True)
-    #         if hits:
-    #             if self.vx > 0:
-    #                 self.x = hits[0].rect.left - self.rect.width
-    #             if self.vx < 0:
-    #                 self.x = hits[0].rect.right
-    #             self.vx = 0
-    #             self.rect.x = self.x
-    #             if hits:
-    #                 return
-    #     if dir == 'y':
-    #         hits = pg.sprite.spritecollide(self, self.game.powerups, True)
-    #         if hits:
-    #             if self.vy > 0:
-    #                 self.y = hits[0].rect.top - self.rect.height
-    #             if self.vy < 0:
-    #                 self.y = hits[0].rect.bottom
-    #             self.vy = 0
-    #             self.rect.y = self.y
-
-# # sets the name of p1
-# p1 = Player("Belda")
-# # prints the name of p1
-# print(p1.name)

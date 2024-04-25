@@ -40,7 +40,6 @@ class Game:
         # Boolean to check whether game is running or not
         self.load_data()
         self.timer = Timer(self)
-        # self.hitpoints = 50
     # gonna load data to the RAM
     def load_data(self):
         # make game_folder var for the file path 
@@ -57,7 +56,7 @@ class Game:
             for line in f:
                 # print each line in f
                 print(line)
-                # put each dddline in f into the self.map_data list
+                # put each line in f into the self.map_data list
                 self.map_data.append(line)
 
      # Create run method which runs the whole GAME
@@ -72,9 +71,7 @@ class Game:
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
-        # self.player1 = Player(self, 1, 1)
-        # for x in range(10, 20):
-            # Wall(self, x, 5)
+        
         # make a for loop from self.map_data list
         for row, tiles in enumerate(self.map_data):
             print(row)
@@ -164,29 +161,13 @@ class Game:
             if event.type == pg.QUIT:
                 self.quit()
     
-            # make the controls to move player
-            # if event.type == pg.KEYDOWN:
-            #     if event.key == pg.K_LEFT:
-            #         self.player.move(dx=-1)
-            #     if event.key == pg.K_RIGHT:
-            #         self.player.move(dx=1)
-            #     if event.key == pg.K_UP:
-            #         self.player.move(dy=-1)
-            #     if event.key == pg.K_DOWN:
-            #         self.player.move(dy=1)
     # start screen
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
         self.draw_text(self.screen, "Press any key to play...", 24, GREEN, WIDTH/2, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
-    # def show_start_screen(self):
-    #     if not self.running:
-    #         return
-    #     self.screen.fill(BGCOLOR)
-    #     self.draw_text(self.screen, "Press any key to play...", 24, WHITE, WIDTH/2, HEIGHT/2)
-    #     pg.display.flip()
-    #     self.wait_for_key()
+
     # wait for KEYUP to start
     def wait_for_key(self):
         waiting = True
@@ -199,10 +180,7 @@ class Game:
                 if event.type == pg.KEYUP:
                     waiting = False
 
-    def powerup_respawn(self):
-        pass
-    def coin_respawn(self):
-        pass
+    
 
 
 # Create a new game
