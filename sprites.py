@@ -102,14 +102,21 @@ class Player(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
             if str(hits[0].__class__.__name__) == "Coin":
-                self.moneybag += 1
-                hits[0].kill()
+                if self.moneybag >= 0:
+                    self.game.cooldown.cd = 5
+                    self.cooling = True
+                    self.moneybag += 1
+                # hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
-                if self.hitpoints < 50:
+                if self.hitpoints < 50 and self.cooling == False:
                     self.hitpoints += 5
-                    hits[0].kill()
-                    # return self.game.get_current_time()
+                    self.game.cooldown.cd = 5
+                    self.cooling = True
+                    return self.game.get_countdown() + 5
+                    # hits[0].kill()
                 # self.speed += 200
+                if self.game.get_countdown() >= self.game.get_countdown() + 5:
+                    self.cooling = False
                 
             if str(hits[0].__class__.__name__) == "Mob":
                 # print(hits[0].__class__.__name__)
@@ -121,7 +128,10 @@ class Player(pg.sprite.Sprite):
     def load_images(self):
         self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
                                 self.spritesheet.get_image(32,0, 32, 32)]
-            
+
+    # def timer(self):
+    #     if self.get_current_
+
     def animate(self):
         now = pg.time.get_ticks()
         if now - self.last_update > 350:
