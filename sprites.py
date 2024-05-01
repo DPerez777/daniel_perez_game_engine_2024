@@ -314,6 +314,10 @@ class Mob(pg.sprite.Sprite):
         if self.game.timer.get_current_time() >= 15:
             self.image = pg.surface.Surface((TILESIZE*2,TILESIZE*2))
             self.speed = 135
+        if self.game.timer.get_current_time() >= 30:
+            self.speed = 165
+        if self.game.timer.get_current_time() >= 50:
+            self.speed = 190
 
 
 

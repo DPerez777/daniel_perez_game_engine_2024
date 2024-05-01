@@ -106,10 +106,7 @@ class Game:
         pg.quit()
         sys.exit()
 
-    def update(self):
-        # make the test timer tick
-        self.cooldown.ticking()
-        self.all_sprites.update()
+    
     
     # draw the grid
     def draw_grid(self):
@@ -164,9 +161,14 @@ class Game:
     # start screen
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
-        self.draw_text(self.screen, "Press any key to play...", 24, GREEN, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "Survive 60 seconds to Win!", 24, GREEN, WIDTH/2.5, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
+
+    def show_win_screen(self):
+        self.screen.fill(BGCOLOR)
+        self.draw_text(self.screen, "You Win!", 24, GREEN, WIDTH/2.5, HEIGHT/2)
+        pg.display.flip()
 
     # wait for KEYUP to start
     def wait_for_key(self):
@@ -179,6 +181,15 @@ class Game:
                     self.quit()
                 if event.type == pg.KEYUP:
                     waiting = False
+
+    def update(self):
+        # make the test timer tick
+        self.cooldown.ticking()
+        self.all_sprites.update()
+        if self.timer.get_current_time() >= 60:
+            self.show_win_screen()
+        if self.timer.get_current_time() >= 61:
+            self.quit()
 
     
 
