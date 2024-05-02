@@ -22,7 +22,7 @@ feedback when player gets hurt - shows player they took damage, DONE
 make levels (make a final boss) DONE
 respawn powerups and coins ONGOING
 make death screen/end game if hp=0 DONE
-make a boss fight/way to kill boss ONGOING
+make boss harder and have final objective DONE3
 '''
 
 

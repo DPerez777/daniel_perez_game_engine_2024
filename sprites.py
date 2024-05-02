@@ -112,10 +112,9 @@ class Player(pg.sprite.Sprite):
                     self.hitpoints += 5
                     self.game.cooldown.cd = 5
                     self.cooling = True
-                    return self.game.get_countdown() + 5
                     # hits[0].kill()
                 # self.speed += 200
-                if self.game.get_countdown() >= self.game.get_countdown() + 5:
+                if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.cooling == True:
                     self.cooling = False
                 
             if str(hits[0].__class__.__name__) == "Mob":
@@ -159,7 +158,7 @@ class Player(pg.sprite.Sprite):
         if self.game.cooldown.cd < 1:
             self.cooling = False
         # if not self.cooling:
-        #     self.game.powerup_respawn() = True
+        #     self.game.powerup_respawn = True
         # make power_ups and mobs False when colliding
         self.collide_with_group(self.game.power_ups, False)
         self.collide_with_group(self.game.mobs, False)
@@ -244,6 +243,8 @@ class PowerUp(pg.sprite.Sprite):
     def update(self):
         if self.game.timer.get_current_time() >= 15:
             self.image.fill(CYAN)
+    
+    # def 
 
 # creates the class "Mob"
 class Mob(pg.sprite.Sprite):
