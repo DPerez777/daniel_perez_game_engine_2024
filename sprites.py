@@ -53,7 +53,8 @@ class Player(pg.sprite.Sprite):
         self.moneybag = 0
         self.speed = 300
         self.hitpoints = 50
-        self.cooling = False
+        self.powerup_cooling = False
+        self.coin_cooling = False
         self.timer = Timer(self.game)
     
     # make the player follow WASD or the arrows 
@@ -102,20 +103,18 @@ class Player(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
             if str(hits[0].__class__.__name__) == "Coin":
-                if self.moneybag >= 0:
-                    self.game.cooldown.cd = 5
-                    self.cooling = True
+                if hits[0].collectable:
                     self.moneybag += 1
+                    hits[0].collectable = False
                 # hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
-                if self.hitpoints < 50 and self.cooling == False:
+                if self.hitpoints < 50 and self.powerup_cooling == False:
                     self.hitpoints += 5
                     self.game.cooldown.cd = 5
-                    self.cooling = True
-                    # hits[0].kill()
+                    self.powerup_cooling = True
                 # self.speed += 200
-                if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.cooling == True:
-                    self.cooling = False
+                if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
+                    self.powerup_cooling = False
                 
             if str(hits[0].__class__.__name__) == "Mob":
                 # print(hits[0].__class__.__name__)
@@ -127,9 +126,6 @@ class Player(pg.sprite.Sprite):
     def load_images(self):
         self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
                                 self.spritesheet.get_image(32,0, 32, 32)]
-
-    # def timer(self):
-    #     if self.get_current_
 
     def animate(self):
         now = pg.time.get_ticks()
@@ -151,10 +147,10 @@ class Player(pg.sprite.Sprite):
         # add collision later
         self.collide_with_walls('x')
         self.rect.y = self.y
-        # add collision later
+        # add collision later           
         self.collide_with_walls('y')
                     
-        self.collide_with_group(self.game.coins, True)
+        self.collide_with_group(self.game.coins, False)
         if self.game.cooldown.cd < 1:
             self.cooling = False
         # if not self.cooling:
@@ -213,9 +209,19 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+        self.cooldown = 5
+        self.timer = self.cooldown
+        self.collectable = False
+
+    # made possible by Ayuush
     def update(self):
-        if self.game.timer.get_current_time() >= 15:
-            self.image.fill(ORANGE)
+        self.image.fill(ORANGE)
+        if self.collectable == False:
+            self.timer -= self.game.dt
+            if self.timer <= 0:
+                self.collectable = True
+                self.timer = self.cooldown
+    
         
 
 
