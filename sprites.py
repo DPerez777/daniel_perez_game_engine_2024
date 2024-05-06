@@ -108,13 +108,14 @@ class Player(pg.sprite.Sprite):
                     hits[0].collectable = False
                 # hits[0].kill()
             if str(hits[0].__class__.__name__) == "PowerUp":
-                if self.hitpoints < 50 and self.powerup_cooling == False:
+                if self.hitpoints < 50 and hits[0].collectable:
                     self.hitpoints += 5
                     self.game.cooldown.cd = 5
-                    self.powerup_cooling = True
+                    # self.powerup_cooling = True
+                    hits[0].collectable = False
                 # self.speed += 200
-                if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
-                    self.powerup_cooling = False
+                # if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
+                #     self.powerup_cooling = False
                 
             if str(hits[0].__class__.__name__) == "Mob":
                 # print(hits[0].__class__.__name__)
@@ -214,13 +215,17 @@ class Coin(pg.sprite.Sprite):
         self.collectable = False
 
     # made possible by Ayuush
-    def update(self):
-        self.image.fill(ORANGE)
+    def update(self):        
         if self.collectable == False:
             self.timer -= self.game.dt
+            self.image.fill(USED)
             if self.timer <= 0:
                 self.collectable = True
                 self.timer = self.cooldown
+                if self.game.timer.get_current_time() >= 15:
+                    self.image.fill(ORANGE)
+                else:
+                    self.image.fill(YELLOW)
     
         
 
@@ -245,10 +250,21 @@ class PowerUp(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        self.cooldown = 5
+        self.timer = self.cooldown
+        self.collectable = False
     
     def update(self):
-        if self.game.timer.get_current_time() >= 15:
-            self.image.fill(CYAN)
+        if self.collectable == False:
+            self.timer -= self.game.dt
+            self.image.fill(USED)
+            if self.timer <= 0:
+                self.collectable = True
+                self.timer = self.cooldown
+                if self.game.timer.get_current_time() >= 15:
+                    self.image.fill(CYAN)
+                else:
+                    self.image.fill(BLUE)
     
     # def 
 

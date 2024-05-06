@@ -18,6 +18,7 @@ BGCOLOR2 = (100,150,100)
 WALL2 = (40,40,40)
 ORANGE = (255,200,0)
 CYAN = (50,200,200)
+USED = (255,100,100)
 # ^ color of objects using RGB
 
 FPS = 30
