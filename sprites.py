@@ -113,7 +113,11 @@ class Player(pg.sprite.Sprite):
                     self.game.cooldown.cd = 5
                     # self.powerup_cooling = True
                     hits[0].collectable = False
-                # self.speed += 200
+            if str(hits[0].__class__.__name__) == "Shop":
+                if self.moneybag >= 5:
+                    self.speed += 200
+                    self.moneybag -= 5
+                    print("vroom")
                 # if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
                 #     self.powerup_cooling = False
                 
@@ -313,7 +317,7 @@ class Mob(pg.sprite.Sprite):
             if str(hits[0].__class__.__name__) == "Player":
                 self.vx *= -1
                 self.vy *= -1
-    # make Mob follow player (?)d
+    # make Mob follow player (?)
     def update(self):
         self.x += self.vx * self.game.dt
         self.y += self.vy * self.game.dt
@@ -343,6 +347,17 @@ class Mob(pg.sprite.Sprite):
             self.speed = 190
 
 
+class Shop(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.shop
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((2*TILESIZE, 2*TILESIZE))
+        self.image.fill(SHOPC)
+        self.rect = self.image.get_rect()
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
 
-
-
+    def update(self):
+        if self.game.timer.get_current_time() >= 15:
+            self.image.fill(SHOPC2)

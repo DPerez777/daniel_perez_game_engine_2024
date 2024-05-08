@@ -20,7 +20,7 @@ from math import floor
 menu screen - player chooses when to start the game, but must press button to do so DONE
 feedback when player gets hurt - shows player they took damage, DONE
 make levels (make a final boss) DONE
-respawn powerups and coins ONGOING
+respawn powerups and coins DONE
 make death screen/end game if hp=0 DONE
 make boss harder and have final objective DONE
 '''
@@ -71,6 +71,7 @@ class Game:
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        self.shop = pg.sprite.Group()
         
         # make a for loop from self.map_data list
         for row, tiles in enumerate(self.map_data):
@@ -91,6 +92,8 @@ class Game:
                     Mob(self, col, row)
                 if tile == 'U':
                     PowerUp(self, col, row)
+                if tile == 'S':
+                    Shop(self, col, row)
 
     # Runs the game
     def run(self):
