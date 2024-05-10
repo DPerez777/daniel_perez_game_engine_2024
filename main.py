@@ -138,6 +138,8 @@ class Game:
         
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
+        # the following code is from ChatGPT
+        speed_boost_text = "Speed Boost: " + str(len(self.player.inventory))
         # draw timer
         self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
         # make the text change color after 15s
@@ -145,10 +147,14 @@ class Game:
             self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, CYAN, 935, 0)
             self.draw_text(self.screen, "Level 2", 32, WHITE, WIDTH/4, 1)
+            if len(self.player.inventory) >= 1:
+                self.draw_text(self.screen, speed_boost_text, 32, YELLOW, 800, 730)
         else:
             self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
             self.draw_text(self.screen, "Level 1", 32, BLACK, WIDTH/4 - 32, 1)
+            if len(self.player.inventory) >= 1:
+                self.draw_text(self.screen, speed_boost_text, 32, YELLOW, 800, 730)
         
         # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
         # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
@@ -189,6 +195,19 @@ class Game:
         # make the test timer tick
         self.cooldown.ticking()
         self.all_sprites.update()
+        # the following was inspired by ChatGPT
+        collisions = pg.sprite.spritecollide(self.player, self.shop, False)
+        for shop_collision in collisions:
+            # Check if player has at least 5 coins
+            if len(self.player.inventory) <= 5:
+                if self.player.moneybag >= 5:
+                    # Remove 5 coins from the player's inventory
+                    self.player.moneybag -= 5
+                    # Give the player the speed item
+                    self.player.inventory['speed'] = True 
+                    print("vrooom")
+                
+            
         if self.timer.get_current_time() >= 60:
             self.show_win_screen()
         if self.timer.get_current_time() >= 61:

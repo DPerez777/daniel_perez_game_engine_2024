@@ -56,6 +56,8 @@ class Player(pg.sprite.Sprite):
         self.powerup_cooling = False
         self.coin_cooling = False
         self.timer = Timer(self.game)
+        self.inventory = {}
+    
     
     # make the player follow WASD or the arrows 
     def get_keys(self):
@@ -110,13 +112,14 @@ class Player(pg.sprite.Sprite):
             if str(hits[0].__class__.__name__) == "PowerUp":
                 if self.hitpoints < 50 and hits[0].collectable:
                     self.hitpoints += 5
-                    self.game.cooldown.cd = 5
+                    self.game.cooldown.cd = 7
                     # self.powerup_cooling = True
                     hits[0].collectable = False
             if str(hits[0].__class__.__name__) == "Shop":
                 if self.moneybag >= 5:
                     self.speed += 200
                     self.moneybag -= 5
+                    self.player.inventory['speed'] = True 
                     print("vroom")
                 # if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
                 #     self.powerup_cooling = False
@@ -254,7 +257,7 @@ class PowerUp(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-        self.cooldown = 5
+        self.cooldown = 7
         self.timer = self.cooldown
         self.collectable = False
     
@@ -270,11 +273,9 @@ class PowerUp(pg.sprite.Sprite):
                 else:
                     self.image.fill(BLUE)
     
-    # def 
 
 # creates the class "Mob"
 class Mob(pg.sprite.Sprite):
-    
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.mobs
         # init super class
