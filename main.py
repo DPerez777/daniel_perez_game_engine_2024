@@ -46,6 +46,7 @@ class Game:
         self.speed_boost_duration = 3
         self.speed_boost_timer = 0
         self.speed_boost_activate = False
+        keys = pg.key.get_pressed()
     # gonna load data to the RAM
     def load_data(self):
         # make game_folder var for the file path 
@@ -211,18 +212,18 @@ class Game:
                     # Remove 5 coins from the player's inventory
                     self.player.moneybag -= 5
                     # Give the player the speed item
-                    self.player.inventory['speed'] = True
-                    # set the duration for the speed boost
-                    self.speed_boost_timer = self.speed_boost_duration
-                    # check for speed boost\
+                    self.player.inventory['speed'] = True                   
 
         for event in pg.event.get():
-            if event.type == pg.QUIT:
-                pass
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    if "speed" in self.player.inventory and self.player.speed == PLAYER_SPEED and not self.speed_boost_activate:
+                        self.player.speed += 200
+                        self.speed_boost_activate = True
+                        # set the duration for the speed boost
+                        self.speed_boost_timer = self.speed_boost_duration
 
-        if "speed" in self.player.inventory and self.player.speed == PLAYER_SPEED:
-            self.player.speed += 200
-            print(self.player.speed)
+        
 
         # Decrease the speed boost timer
         if self.speed_boost_timer > 0:
@@ -233,6 +234,7 @@ class Game:
                 self.player.speed = PLAYER_SPEED
                 del self.player.inventory["speed"]
                 print(self.player.speed)
+                self.speed_boost_activate = False
 
             
         if self.timer.get_current_time() >= 60:
