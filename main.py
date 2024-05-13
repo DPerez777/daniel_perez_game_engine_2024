@@ -23,6 +23,8 @@ make levels (make a final boss) DONE
 respawn powerups and coins DONE
 make death screen/end game if hp=0 DONE
 make boss harder and have final objective DONE
+economy DONE
+shop ONGOING
 '''
 
 
@@ -40,6 +42,10 @@ class Game:
         # Boolean to check whether game is running or not
         self.load_data()
         self.timer = Timer(self)
+        # speed boost timer from ChatGPT
+        self.speed_boost_duration = 3
+        self.speed_boost_timer = 0
+        self.speed_boost_activate = False
     # gonna load data to the RAM
     def load_data(self):
         # make game_folder var for the file path 
@@ -139,7 +145,7 @@ class Game:
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
         # the following code is from ChatGPT
-        speed_boost_text = "Speed Boost: " + str(len(self.player.inventory))
+        # speed_boost_text = "Speed Boost: " + str(len(self.player.inventory))
         # draw timer
         self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
         # make the text change color after 15s
@@ -148,13 +154,13 @@ class Game:
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, CYAN, 935, 0)
             self.draw_text(self.screen, "Level 2", 32, WHITE, WIDTH/4, 1)
             if len(self.player.inventory) >= 1:
-                self.draw_text(self.screen, speed_boost_text, 32, YELLOW, 800, 730)
+                self.draw_text(self.screen, "Speed Boost READY", 32, YELLOW, 800, 730)
         else:
             self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
             self.draw_text(self.screen, "Level 1", 32, BLACK, WIDTH/4 - 32, 1)
             if len(self.player.inventory) >= 1:
-                self.draw_text(self.screen, speed_boost_text, 32, YELLOW, 800, 730)
+                self.draw_text(self.screen, "Speed Boost READY", 32, YELLOW, 800, 730)
         
         # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
         # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
@@ -198,15 +204,36 @@ class Game:
         # the following was inspired by ChatGPT
         collisions = pg.sprite.spritecollide(self.player, self.shop, False)
         for shop_collision in collisions:
-            # Check if player has at least 5 coins
+            # check to see if player has less than 5 boosts
             if len(self.player.inventory) <= 5:
+                # Check if player has at least 5 coins
                 if self.player.moneybag >= 5:
                     # Remove 5 coins from the player's inventory
                     self.player.moneybag -= 5
                     # Give the player the speed item
-                    self.player.inventory['speed'] = True 
-                    print("vrooom")
-                
+                    self.player.inventory['speed'] = True
+                    # set the duration for the speed boost
+                    self.speed_boost_timer = self.speed_boost_duration
+                    # check for speed boost\
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pass
+
+        if "speed" in self.player.inventory and self.player.speed == PLAYER_SPEED:
+            self.player.speed += 200
+            print(self.player.speed)
+
+        # Decrease the speed boost timer
+        if self.speed_boost_timer > 0:
+            self.speed_boost_timer -= self.dt
+            # Check if the speed boost timer has expired
+            if self.speed_boost_timer <= 0:
+                # Reset player speed and remove "speed" from inventory
+                self.player.speed = PLAYER_SPEED
+                del self.player.inventory["speed"]
+                print(self.player.speed)
+
             
         if self.timer.get_current_time() >= 60:
             self.show_win_screen()

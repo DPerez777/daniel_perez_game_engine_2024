@@ -66,13 +66,13 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_t]:
             self.game.test_timer.event_reset()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.vx = -PLAYER_SPEED
+            self.vx = -self.speed
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.vx = PLAYER_SPEED
+            self.vx = self.speed
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vy = -PLAYER_SPEED
+            self.vy = -self.speed
         if keys[pg.K_DOWN] or keys[pg.K_s]:
-            self.vy = PLAYER_SPEED
+            self.vy = self.speed
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
@@ -115,12 +115,12 @@ class Player(pg.sprite.Sprite):
                     self.game.cooldown.cd = 7
                     # self.powerup_cooling = True
                     hits[0].collectable = False
-            if str(hits[0].__class__.__name__) == "Shop":
-                if self.moneybag >= 5:
-                    self.speed += 200
-                    self.moneybag -= 5
-                    self.player.inventory['speed'] = True 
-                    print("vroom")
+            # if str(hits[0].__class__.__name__) == "Shop":
+            #     if self.moneybag >= 5:
+            #         self.speed += 200
+            #         self.moneybag -= 5
+            #         self.player.inventory['speed'] = True 
+            #         print("vroom")
                 # if self.timer.get_countdown() >= self.timer.get_countdown() + 5 and self.powerup_cooling == True:
                 #     self.powerup_cooling = False
                 
@@ -273,7 +273,6 @@ class PowerUp(pg.sprite.Sprite):
                 else:
                     self.image.fill(BLUE)
     
-
 # creates the class "Mob"
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
