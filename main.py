@@ -39,8 +39,6 @@ class Game:
         pg.display.set_caption(TITLE)
         # setting up the pygame clock
         self.clock = pg.time.Clock()
-        # Boolean to check whether game is running or not
-        self.load_data()
         self.timer = Timer(self)
         # speed boost timer from ChatGPT
         self.speed_boost_duration = 3
@@ -68,6 +66,7 @@ class Game:
 
      # Create run method which runs the whole GAME
     def new(self):
+        self.load_data()
         # make the timer
         self.cooldown = Timer(self)
         # make text saying "create new game..."
@@ -145,23 +144,43 @@ class Game:
         
         # self.draw_grid()
         self.all_sprites.draw(self.screen)
-        # the following code is from ChatGPT
-        # speed_boost_text = "Speed Boost: " + str(len(self.player.inventory))
-        # draw timer
-        self.draw_text(self.screen, str(self.cooldown.current_time), 24, WHITE, WIDTH/2 - 32, 2)
+        if self.timer.get_current_time() == 7:
+            self.draw_text(self.screen, "spawning...", 24, YELLOW, 70, 70)
+        if self.timer.get_current_time() == 7:
+            self.draw_text(self.screen, "spawning...", 24, YELLOW, 865, 615)
+        if self.timer.get_current_time() == 3:
+            self.draw_text(self.screen, "Coins Spawn in 3", 24, ORANGE, 440, 30)
+        if self.timer.get_current_time() == 4:
+            self.draw_text(self.screen, "Coins Spawn in 2", 24, ORANGE, 440, 30)
+        if self.timer.get_current_time() == 5:
+            self.draw_text(self.screen, "Coins Spawn in 1", 24, ORANGE, 440, 30)
+        if self.timer.get_current_time() == 50:
+            self.draw_text(self.screen, "10 Seconds left", 60, RED, 350, HEIGHT/2 - 100)
+        if self.timer.get_current_time() == 51:
+            self.draw_text(self.screen, "10 Seconds left", 60, RED, 350, HEIGHT/2 - 100)
+        if self.timer.get_current_time() == 57:
+            self.draw_text(self.screen, "3 Seconds left", 60, RED, 350, HEIGHT/2 - 100)
+        if self.timer.get_current_time() == 58:
+            self.draw_text(self.screen, "2 Seconds left", 60, RED, 350, HEIGHT/2 - 100)
+        if self.timer.get_current_time() == 59:
+            self.draw_text(self.screen, "1 Seconds left", 60, RED, 350, HEIGHT/2 - 100)
+        
+        if self.timer.get_current_time() == 14:
+            self.draw_text(self.screen, "BOSS SPAWNING!!!", 59, RED, 289, HEIGHT/2 - 150)
+        
         # make the text change color after 15s
         if self.timer.get_current_time() >= 15:
             self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, CYAN, 935, 0)
             self.draw_text(self.screen, "Level 2", 32, WHITE, WIDTH/4, 1)
             if len(self.player.inventory) >= 1:
-                self.draw_text(self.screen, "Speed Boost READY", 32, YELLOW, 800, 730)
+                self.draw_text(self.screen, "Speed Boost (Spam P)", 32, YELLOW, 720, 730)
         else:
             self.draw_text(self.screen, str(self.player.moneybag), 32, YELLOW, 1, 0)
             self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, BLUE, 935, 0)
             self.draw_text(self.screen, "Level 1", 32, BLACK, WIDTH/4 - 32, 1)
             if len(self.player.inventory) >= 1:
-                self.draw_text(self.screen, "Speed Boost READY", 32, YELLOW, 800, 730)
+                self.draw_text(self.screen, "Speed Boost (Spam P)", 32, YELLOW, 720, 730)
         
         # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
         # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
@@ -212,14 +231,16 @@ class Game:
                     # Remove 5 coins from the player's inventory
                     self.player.moneybag -= 5
                     # Give the player the speed item
-                    self.player.inventory['speed'] = True                   
+                    self.player.inventory['speed'] = True                 
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    if "speed" in self.player.inventory and self.player.speed == PLAYER_SPEED and not self.speed_boost_activate:
+                if event.key == pg.K_p:
+                    print("great")
+                    if "speed" in self.player.inventory and not self.speed_boost_activate:
                         self.player.speed += 200
                         self.speed_boost_activate = True
+                        print("vrooom")
                         # set the duration for the speed boost
                         self.speed_boost_timer = self.speed_boost_duration
 
