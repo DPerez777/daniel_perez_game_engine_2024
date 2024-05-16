@@ -138,11 +138,9 @@ class Game:
         # change bg color after 15s
         if self.timer.get_current_time() >= 15:
             self.screen.fill(BGCOLOR2)
-            # self.draw_text(self.screen, str(self.player.moneybag), 32, ORANGE, 1, 0)
-            # self.draw_text(self.screen, "HP " + str(self.player.hitpoints), 32, RED, 935, 0)
         else: self.screen.fill(BGCOLOR)
         
-        # self.draw_grid()
+        # display notifications
         self.all_sprites.draw(self.screen)
         if self.timer.get_current_time() == 7:
             self.draw_text(self.screen, "spawning...", 24, YELLOW, 70, 70)
@@ -182,9 +180,6 @@ class Game:
             if len(self.player.inventory) >= 1:
                 self.draw_text(self.screen, "Speed Boost (Spam P)", 32, YELLOW, 720, 730)
         
-        # self.draw_text(self.screen, str(self.cooldown.event_time), 24, WHITE, WIDTH/2 - 32, 80)
-        # self.draw_text(self.screen, str(self.cooldown.get_countdown), 24, WHITE, WIDTH/2 - 32, 120)
-        # display moneybag
         pg.display.flip()
 
     def events(self):
@@ -236,11 +231,11 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_p:
-                    print("great")
+                    # print("great")
                     if "speed" in self.player.inventory and not self.speed_boost_activate:
                         self.player.speed += 200
                         self.speed_boost_activate = True
-                        print("vrooom")
+                        # print("vrooom")
                         # set the duration for the speed boost
                         self.speed_boost_timer = self.speed_boost_duration
 
@@ -254,7 +249,7 @@ class Game:
                 # Reset player speed and remove "speed" from inventory
                 self.player.speed = PLAYER_SPEED
                 del self.player.inventory["speed"]
-                print(self.player.speed)
+                # print(self.player.speed)
                 self.speed_boost_activate = False
 
             
