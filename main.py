@@ -24,7 +24,7 @@ respawn powerups and coins DONE
 make death screen/end game if hp=0 DONE
 make boss harder and have final objective DONE
 economy DONE
-shop ONGOING
+shop DONE
 '''
 
 
