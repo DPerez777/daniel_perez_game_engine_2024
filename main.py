@@ -146,6 +146,10 @@ class Game:
             self.draw_text(self.screen, "spawning...", 24, YELLOW, 70, 70)
         if self.timer.get_current_time() == 7:
             self.draw_text(self.screen, "spawning...", 24, YELLOW, 865, 615)
+        if self.timer.get_current_time() == 6:
+            self.draw_text(self.screen, "spawning...", 24, YELLOW, 70, 70)
+        if self.timer.get_current_time() == 6:
+            self.draw_text(self.screen, "spawning...", 24, YELLOW, 865, 615)
         if self.timer.get_current_time() == 3:
             self.draw_text(self.screen, "Coins Spawn in 3", 24, ORANGE, 440, 30)
         if self.timer.get_current_time() == 4:
